@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=block');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #111111;
+  --offwhite: #F9F9F7;
+  --muted: #E5E5E0;
+  --accent: #CC0000;
+}
+
+* {
+  border-radius: 0px !important;
+}
+
+html,
+body {
+  background-color: var(--offwhite);
+  color: var(--ink);
+  font-family: 'Lora', Georgia, serif;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23111111' fill-opacity='0.04' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.font-serif { font-family: 'Playfair Display', 'Times New Roman', serif; }
+.font-body { font-family: 'Lora', Georgia, serif; }
+.font-sans { font-family: 'Inter', 'Helvetica Neue', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+.sharp-corners { border-radius: 0px !important; }
+
+.newsprint-texture {
+  position: relative;
+}
+.newsprint-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(0deg, transparent 98%, rgba(0, 0, 0, 0.02) 100%),
+    linear-gradient(90deg, transparent 98%, rgba(0, 0, 0, 0.02) 100%);
+  background-size: 3px 3px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.hard-shadow-hover {
+  transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+}
+.hard-shadow-hover:hover {
+  box-shadow: 4px 4px 0px 0px #111111;
+  transform: translate(-2px, -2px);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--offwhite), 0 0 0 4px var(--ink);
+}
+
+/* Thin scrollbar that stays in-theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--offwhite);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border: 2px solid var(--offwhite);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
