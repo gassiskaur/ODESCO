@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+import logging
 
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -7,6 +8,8 @@ from auth.dependencies import get_current_user
 from db import collections_collection, messages_collection, sessions_collection
 from models.schemas import MessageCreate, SessionCreate
 from processing_agent.agent import run_agent
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/sessions", tags=["research"])
 
@@ -82,7 +85,19 @@ async def post_message(session_id: str, payload: MessageCreate, user: dict = Dep
     }
     await messages_collection().insert_one(user_doc)
 
-    agent_result = await run_agent(session_id, payload.message, forced_operation=payload.operation)
+    try:
+        agent_result = await run_agent(session_id, payload.message, forced_operation=payload.operation)
+    except Exception:
+        logger.exception("Agent run failed for session %s", session_id)
+        agent_result = {
+            "message_type": "text",
+            "content": (
+                "Something went wrong on the research agent's end while handling that — "
+                "check the backend terminal for the actual error (often a Gemini API key or "
+                "quota issue). Your message was saved, so you can try again once it's fixed."
+            ),
+            "data": {"collection_id": None, "papers": []},
+        }
 
     agent_doc = {
         "session_id": session_id,
