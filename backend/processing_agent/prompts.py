@@ -36,6 +36,18 @@ def build_system_prompt(forced_operation: str | None, active_collection_summary:
             f"toward that operation, but still validate it makes sense given the conversation "
             f"— ask for clarification if it doesn't (see rule 8)."
         )
+    if forced_operation == "research_gaps":
+        parts.append(
+            "\nNote: there is no dedicated research-gap-finding tool in this version. Do NOT "
+            "call search_works with a blank query to try to find one — that returns an "
+            "unfiltered, unrelated slice of OpenAlex. Instead: if there's an active paper "
+            "collection in this session, call analyze_papers on it (or on the specific papers "
+            "the user means) and reason over what those abstracts do and don't cover to surface "
+            "potentially underexplored angles, phrased as hedged observations per rule 4 — never "
+            "as a definitive absence of research. If there's no relevant collection yet, tell the "
+            "user you'll need to search for papers on their topic first before you can identify "
+            "gaps in the existing literature."
+        )
     if active_collection_summary:
         parts.append(f"\nActive paper collection in this session: {active_collection_summary}")
     return "\n".join(parts)

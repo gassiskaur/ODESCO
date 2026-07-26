@@ -66,6 +66,18 @@ async def search_works_tool(
     filters: dict = {}
     clarification = None
 
+    if not query and not (entity_name and entity_type):
+        return {
+            "status": "error",
+            "message": (
+                "search_works requires either `query` (topic keywords) or `entity_name`+"
+                "`entity_type` (a specific author/institution/journal/topic). A blank search "
+                "isn't allowed — it returns an unfiltered, essentially random slice of all of "
+                "OpenAlex. Reformulate using the actual topic already established in this "
+                "conversation."
+            ),
+        }
+
     if entity_name and entity_type:
         resolution = await resolve_entity(entity_type, entity_name)
         if not resolution["resolved"]:

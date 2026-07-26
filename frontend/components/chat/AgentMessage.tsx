@@ -3,6 +3,7 @@ import { PaperList } from "@/components/papers/PaperList";
 import { ComparisonTable } from "@/components/analysis/ComparisonTable";
 import { AnalysisCard } from "@/components/analysis/AnalysisCard";
 import { ResearchGapCard } from "@/components/analysis/ResearchGapCard";
+import { Markdown } from "./Markdown";
 
 interface AgentMessageProps {
   message: ResearchMessage;
@@ -20,7 +21,7 @@ export function AgentMessage({ message, sessionId, onCompareSelected }: AgentMes
         <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
           Research Agent
         </p>
-        <p className="whitespace-pre-wrap font-body text-sm leading-relaxed">{message.content}</p>
+        <Markdown>{message.content}</Markdown>
 
         {message.message_type === "search_results" && (
           <PaperList
@@ -31,7 +32,7 @@ export function AgentMessage({ message, sessionId, onCompareSelected }: AgentMes
           />
         )}
 
-        {message.message_type === "comparison" && (
+        {message.message_type === "comparison" && previews.length === 0 && (
           <ComparisonTable sessionId={sessionId} collectionId={collectionId} previews={previews} />
         )}
 
