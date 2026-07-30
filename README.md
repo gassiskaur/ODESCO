@@ -1,4 +1,4 @@
-# ODESCO — v1.1
+# ODESCO V1.1
 
 An AI research agent that discovers, analyzes, and compares scholarly papers using OpenAlex,
 with local speech-to-text input and a flash-free light/dark theme.
