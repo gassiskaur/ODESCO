@@ -1,7 +1,16 @@
-# ODESCO — v1.1
+# ODESCO V1.1
 
 An AI research agent that discovers, analyzes, and compares scholarly papers using OpenAlex,
 with local speech-to-text input and a flash-free light/dark theme.
+
+## About
+
+Why not just use ChatGPT? 
+General chat models answer questions about papers from memory which means invented citations, misattributed findings, and no awareness of anything recent. 
+Odesco doesn't ask an LLM to recall papers; every result comes from a live query against OpenAlex's ~250M-work index, and the model's job is limited to deciding what to search for and how to present it. 
+On top of that, it's built as a workflow tool, not a chat window: structured, typed responses render as real UI — comparison grids, clickable paper cards, click-to-select compare — instead of prose you have to parse yourself, and sessions persist so past research threads are saved and resumable. 
+It's not a general-purpose assistant; it's a purpose-built tool for one job, literature discovery and comparison, grounded in real data.
+
 
 ## Stack
 
