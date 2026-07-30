@@ -2,23 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { researchApi } from "@/lib/api-client";
+import { useSelection } from "@/lib/selection-context";
 import type { Paper, PaperPreview } from "@/lib/types";
 import { PaperCard } from "./PaperCard";
 import { PaperSelection } from "./PaperSelection";
-import { Button } from "@/components/common/Button";
 import { LoadingState } from "@/components/common/LoadingState";
+import { cn } from "@/lib/utils";
 
 interface PaperListProps {
   sessionId: string;
   collectionId?: string | null;
-  previews: PaperPreview[];
-  onCompareSelected: (paperIds: string[], paperTitles: string[]) => void;
 }
 
-export function PaperList({ sessionId, collectionId, previews, onCompareSelected }: PaperListProps) {
+export function PaperList({ sessionId, collectionId }: PaperListProps) {
   const [papers, setPapers] = useState<Paper[] | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState(false);
+  const { isSelected, toggle } = useSelection();
 
   useEffect(() => {
     let cancelled = false;
@@ -33,45 +32,35 @@ export function PaperList({ sessionId, collectionId, previews, onCompareSelected
     };
   }, [sessionId, collectionId]);
 
-  function toggle(id: string) {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
-  if (!collectionId) {
-    return null;
-  }
-
-  if (!papers) {
-    return <LoadingState label="Pulling the results" />;
-  }
+  if (!collectionId) return null;
+  if (!papers) return <LoadingState label="Pulling the results" />;
 
   const visible = expanded ? papers : papers.slice(0, 5);
-  const selectedTitles = papers.filter((p) => selected.has(p.openalex_id)).map((p) => p.title);
 
   return (
     <div className="mt-3">
       <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
-        {papers.length} papers found
+        {papers.length} papers found &middot; select any to add to the comparison tray below
       </p>
 
       <div className="flex flex-col gap-3">
-        {visible.map((paper) => (
-          <div key={paper.openalex_id} className="flex items-start gap-3">
-            <PaperSelection
-              checked={selected.has(paper.openalex_id)}
-              onToggle={() => toggle(paper.openalex_id)}
-              label={paper.title}
-            />
-            <div className="min-w-0 flex-1">
-              <PaperCard paper={paper} />
+        {visible.map((paper) => {
+          const preview: PaperPreview = { openalex_id: paper.openalex_id, title: paper.title };
+          const checked = isSelected(paper.openalex_id);
+          return (
+            <div key={paper.openalex_id} className="flex items-start gap-3">
+              <PaperSelection checked={checked} onToggle={() => toggle(preview)} label={paper.title} />
+              <div
+                className={cn(
+                  "min-w-0 flex-1 transition-all",
+                  checked && "ring-2 ring-accent ring-offset-2 ring-offset-offwhite"
+                )}
+              >
+                <PaperCard paper={paper} />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {papers.length > 5 && (
@@ -82,19 +71,6 @@ export function PaperList({ sessionId, collectionId, previews, onCompareSelected
           {expanded ? "Show fewer" : `View all ${papers.length} papers`}
         </button>
       )}
-
-      <div className="mt-4 flex items-center justify-between border-t border-muted pt-4">
-        <span className="font-mono text-xs text-neutral-500">
-          {selected.size} selected
-        </span>
-        <Button
-          variant="secondary"
-          disabled={selected.size < 2}
-          onClick={() => onCompareSelected(Array.from(selected), selectedTitles)}
-        >
-          Compare Selected
-        </Button>
-      </div>
     </div>
   );
 }

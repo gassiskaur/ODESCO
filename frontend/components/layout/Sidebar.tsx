@@ -6,6 +6,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { researchApi } from "@/lib/api-client";
 import type { ResearchSession } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 
 function relativeDay(iso: string): string {
   const date = new Date(iso);
@@ -108,6 +109,10 @@ export function Sidebar() {
           ))}
         </ul>
       </nav>
+
+      <div className="border-t border-ink p-4">
+        <ThemeToggle />
+      </div>
     </aside>
   );
 }

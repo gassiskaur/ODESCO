@@ -24,9 +24,9 @@ class Settings:
     OPENALEX_API_KEY: str = os.getenv("OPENALEX_API_KEY", "")
     OPENALEX_INCLUDE_XPAC: bool = False  # locked default, see master prompt §12.7
 
-    # --- Gemini ---
+    # --- Gemini / Gemma (same Gemini API, same client, just a different model string) ---
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-flash-latest")
 
     # --- Agent loop bounds (master prompt §12.9) ---
     AGENT_MAX_ITERATIONS: int = 8
@@ -35,6 +35,11 @@ class Settings:
     # --- Search cost policy (master prompt §12.10) ---
     MAX_SEARCH_STRATEGY_VARIANTS: int = 2
     MAX_RESULTS_PER_SEARCH: int = 200
+
+    # --- Voice transcription (faster-whisper, local, free, no API key) ---
+    WHISPER_MODEL_SIZE: str = os.getenv("WHISPER_MODEL_SIZE", "base")
+    WHISPER_DEVICE: str = os.getenv("WHISPER_DEVICE", "cpu")
+    WHISPER_COMPUTE_TYPE: str = os.getenv("WHISPER_COMPUTE_TYPE", "int8")
 
     # --- CORS ---
     FRONTEND_ORIGIN: str = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")

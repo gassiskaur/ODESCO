@@ -8,10 +8,9 @@ import { Markdown } from "./Markdown";
 interface AgentMessageProps {
   message: ResearchMessage;
   sessionId: string;
-  onCompareSelected: (paperIds: string[], paperTitles: string[]) => void;
 }
 
-export function AgentMessage({ message, sessionId, onCompareSelected }: AgentMessageProps) {
+export function AgentMessage({ message, sessionId }: AgentMessageProps) {
   const previews = message.data?.papers ?? [];
   const collectionId = message.data?.collection_id ?? null;
 
@@ -24,12 +23,7 @@ export function AgentMessage({ message, sessionId, onCompareSelected }: AgentMes
         <Markdown>{message.content}</Markdown>
 
         {message.message_type === "search_results" && (
-          <PaperList
-            sessionId={sessionId}
-            collectionId={collectionId}
-            previews={previews}
-            onCompareSelected={onCompareSelected}
-          />
+          <PaperList sessionId={sessionId} collectionId={collectionId} />
         )}
 
         {message.message_type === "comparison" && previews.length === 0 && (

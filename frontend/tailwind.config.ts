@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -9,17 +10,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#111111",
-        offwhite: "#F9F9F7",
-        muted: "#E5E5E0",
-        accent: "#CC0000",
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        offwhite: "rgb(var(--color-offwhite) / <alpha-value>)",
+        muted: "rgb(var(--color-muted) / <alpha-value>)",
+        accent: "rgb(var(--color-accent) / <alpha-value>)",
         neutral: {
-          100: "#F5F5F5",
-          200: "#E5E5E5",
-          400: "#A3A3A3",
-          500: "#737373",
-          600: "#525252",
-          700: "#404040",
+          100: "rgb(var(--color-neutral-100) / <alpha-value>)",
+          200: "rgb(var(--color-neutral-200) / <alpha-value>)",
+          400: "rgb(var(--color-neutral-400) / <alpha-value>)",
+          500: "rgb(var(--color-neutral-500) / <alpha-value>)",
+          600: "rgb(var(--color-neutral-600) / <alpha-value>)",
+          700: "rgb(var(--color-neutral-700) / <alpha-value>)",
         },
       },
       fontFamily: {
@@ -33,7 +34,7 @@ const config: Config = {
         DEFAULT: "0px",
       },
       boxShadow: {
-        hard: "4px 4px 0px 0px #111111",
+        hard: "4px 4px 0px 0px rgb(var(--color-ink))",
       },
     },
   },

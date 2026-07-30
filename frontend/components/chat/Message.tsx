@@ -5,14 +5,11 @@ import { AgentMessage } from "./AgentMessage";
 interface MessageProps {
   message: ResearchMessage;
   sessionId: string;
-  onCompareSelected: (paperIds: string[], paperTitles: string[]) => void;
 }
 
-export function Message({ message, sessionId, onCompareSelected }: MessageProps) {
+export function Message({ message, sessionId }: MessageProps) {
   if (message.role === "user") {
     return <UserMessage message={message} />;
   }
-  return (
-    <AgentMessage message={message} sessionId={sessionId} onCompareSelected={onCompareSelected} />
-  );
+  return <AgentMessage message={message} sessionId={sessionId} />;
 }
