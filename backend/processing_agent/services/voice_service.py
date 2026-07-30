@@ -35,26 +35,23 @@ class TranscriptionError(Exception):
 
 
 def transcribe_audio_bytes(audio_bytes: bytes, filename_hint: str = "audio.webm") -> str:
-    """
-    Transcribes raw audio bytes (as captured by the browser's MediaRecorder,
-    typically webm/opus) to text. faster-whisper decodes the audio itself
-    (via bundled FFmpeg bindings), so no separate ffmpeg install or format
-    conversion is needed on our end - we just need it on disk as a file.
-    """
     if not audio_bytes:
         raise TranscriptionError("No audio data received.")
 
     suffix = Path(filename_hint).suffix or ".webm"
-    with tempfile.NamedTemporaryFile(suffix=suffix, delete=True) as tmp:
+    tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
+    tmp_path = tmp.name
+    try:
         tmp.write(audio_bytes)
-        tmp.flush()
+        tmp.close()  # release the lock BEFORE anything else opens this path
 
-        try:
-            model = _get_model()
-            segments, _info = model.transcribe(tmp.name, beam_size=5, language=None)
-            text = " ".join(segment.text.strip() for segment in segments).strip()
-        except Exception as exc:  # noqa: BLE001 - surface as a clean domain error
-            raise TranscriptionError(f"Transcription failed: {exc}") from exc
+        model = _get_model()
+        segments, _info = model.transcribe(tmp_path, beam_size=5, language=None)
+        text = " ".join(segment.text.strip() for segment in segments).strip()
+    except Exception as exc:  # noqa: BLE001 - surface as a clean domain error
+        raise TranscriptionError(f"Transcription failed: {exc}") from exc
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)  # manual cleanup, works even if transcribe failed
 
     if not text:
         raise TranscriptionError("Could not detect any speech in that recording.")

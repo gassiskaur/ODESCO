@@ -81,8 +81,7 @@ export function ChatWindow({ sessionId }: { sessionId: string }) {
                 What are you researching today?
               </p>
               <p className="mt-3 font-body text-sm text-neutral-600">
-                Ask about a topic, an author, an institution, or a journal — the agent searches
-                OpenAlex and keeps the whole conversation in context.
+                Ask Odesco about a topic, an author, an institution, or a journal!
               </p>
             </div>
           )}

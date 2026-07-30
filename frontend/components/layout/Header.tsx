@@ -16,7 +16,7 @@ export function Header() {
       <div className="flex items-center justify-between px-4 py-4 sm:px-6">
         <div>
           <h1 className="font-serif text-2xl font-black tracking-tighter sm:text-3xl">
-            RESEARCH AGENT
+            ODESCO
           </h1>
           <p className="font-mono text-[10px] uppercase tracking-widest text-neutral-500">
             Vol. 1 &middot; {today} &middot; OpenAlex Edition

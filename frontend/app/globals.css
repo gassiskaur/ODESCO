@@ -1,20 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=block');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-/*
-  Theme tokens as space-separated RGB triplets (Tailwind's rgb(var(--x) /
-  <alpha-value>) pattern), so opacity modifiers like bg-ink/60 keep working.
 
-  Dark mode is a deliberate full inversion of ink <-> offwhite (and the
-  neutral scale), not a separate hand-tuned palette. Because every
-  component in this app is built from semantic classes (bg-offwhite,
-  text-ink, border-ink, bg-accent, etc.) rather than hardcoded colors,
-  this single block is enough to theme the entire app - no component
-  files need to change.
-*/
 :root {
   --color-ink: 17 17 17;             /* #111111 */
   --color-offwhite: 249 249 247;      /* #F9F9F7 */
